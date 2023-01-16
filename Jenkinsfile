@@ -46,6 +46,7 @@ node("${env.NODE_NAME}") {
 		    {
                     	sh 'env'
 		    	sh "${env.CMD1}"
+			sh 'ls'
 //  		    	sh "${env.CMD2}"
 			dir ('target'){
 		    		sh 'pwd' 
@@ -77,12 +78,14 @@ node("${env.TRIVY_NODE}") {
        }
        stage('Build_image') {
                 dir ('repo') {
+			
 			container("${env.TRIVY_CONTAINER}") {
                   withCredentials([usernamePassword(credentialsId: 'docker_registry', passwordVariable: 'docker_pass', usernameVariable: 'docker_user')]) {
                 //   sh 'echo TYPE is : $SERVICE'
 		        //   sh 'sed -i -e "s/SERVICE/$SERVICE/g" Dockerfile deployment-type.yaml' 
                   sh 'sed -i -e "s/SERVICE/$SERVICE/g" -e "s/PORT/$PORT/g"  -e "s/REGISTRY/$REGISTRY/g" -e "s/IMAGE/$IMAGE/g" -e "s/WORKDIR_CMD/$WORKDIR_CMD/g" DockerFile Deployment-beta.yaml' 
-		  sh 'cat DockerFile'	  
+		  sh 'cat DockerFile'
+		  sh 'ls'
                   sh 'docker image build -f DockerFile --build-arg REGISTRY=$REGISTRY -t registry-np.geminisolutions.com/$REGISTRY/$REGISTRY:1.0-$BUILD_NUMBER -t registry-np.geminisolutions.com/$REGISTRY/$REGISTRY .'
                   sh 'trivy image -f json registry-np.geminisolutions.com/$REGISTRY/$REGISTRY:1.0-$BUILD_NUMBER > trivy-report.json' 
 	           archiveArtifacts artifacts: 'trivy-report.json', onlyIfSuccessful: true
