@@ -9,7 +9,7 @@ properties([
 // env.BRANCH="*/main"
 env.MAINTAINER= "maintainer@geminisolutions.com"
 env.BRANCH_CENTRALIZED_FILES="*/main"
-env.SSH_LINK_CENTRALIZED_FILES="git@github.com:gem-siddhant/centralized-repo.git"
+env.SSH_LINK_CENTRALIZED_FILES="git@github.com:Gemini-Solutions/centralized-repo.git"
 
 if(params.SERVICE=="gembook")
 {
