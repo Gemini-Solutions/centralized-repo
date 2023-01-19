@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hpipebackend
+  namespace: dev
+  labels:
+    app: hpipebackend
+spec:
+  replicas: 1
+  revisionHistoryLimit: 0
+  selector:
+    matchLabels:
+      app: hpipebackend
+  template:
+    metadata:
+      labels:
+        app: hpipebackend
+    spec:
+      containers:
+      - name: hpipebackend
+        image: registry-np.geminisolutions.com/hpipe/hpipe_backend/hpipe
+        ports:
+        - name: hpipebackend
+          containerPort: 80
+        imagePullPolicy: Always
+      imagePullSecrets:
+      - name: regcred
