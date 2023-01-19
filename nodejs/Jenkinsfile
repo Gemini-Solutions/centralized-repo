@@ -89,9 +89,10 @@ node("${env.TRIVY_NODE}") {
                submoduleCfg:  [], 
                userRemoteConfigs: [[credentialsId: 'admingithub', 
                url: "$SSH_LINK_CENTRALIZED_FILES", 
-               poll: 'false']],
-               relativeTargetDir: 'nodejs'])
-               sh 'cp -r nodejs/* ${env.SERVICE}/'
+               poll: 'false']]])
+	       sh 'ls -la nodejs/'
+// 	       sh 'cd Java'
+	       sh 'pwd'
            }
        }
        stage('Build_image') {
@@ -100,9 +101,9 @@ node("${env.TRIVY_NODE}") {
                   withCredentials([usernamePassword(credentialsId: 'docker_registry', passwordVariable: 'docker_pass', usernameVariable: 'docker_user')]) {
                 //   sh 'echo TYPE is : $SERVICE'
 		        //   sh 'sed -i -e "s/SERVICE/$SERVICE/g" DockerFile deployment-type.yaml' 
-                  sh 'sed -i -e "s/PORT/$PORT/g" -e "s/REGISTRY/$REGISTRY/g" -e "s/COPY_CMD/$COPY_CMD/g" -e "s/IMAGE/$IMAGE/g" DockerFile Deployment-beta.yaml'
+                  sh 'sed -i -e "s/PORT/$PORT/g" -e "s/REGISTRY/$REGISTRY/g" -e "s/COPY_CMD/$COPY_CMD/g" -e "s/IMAGE/$IMAGE/g" nodejs/DockerFile nodejs/Deployment-beta.yaml'
 		          sh 'cat DockerFile'	  
-                  sh 'docker image build -f DockerFile --build-arg REGISTRY=$REGISTRY -t registry-np.geminisolutions.com/$REGISTRY:1.0-$BUILD_NUMBER -t registry-np.geminisolutions.com/$REGISTRY .'
+                  sh 'docker image build -f nodejs/DockerFile --build-arg REGISTRY=$REGISTRY -t registry-np.geminisolutions.com/$REGISTRY:1.0-$BUILD_NUMBER -t registry-np.geminisolutions.com/$REGISTRY .'
                   sh 'trivy image -f json registry-np.geminisolutions.com/$REGISTRY:1.0-$BUILD_NUMBER > trivy-report.json' archiveArtifacts artifacts: 'trivy-report.json', onlyIfSuccessful: true
                   sh '''docker login -u $docker_user -p $docker_pass https://registry-np.geminisolutions.com'''
                   sh 'docker push registry-np.geminisolutions.com/$REGISTRY:1.0-$BUILD_NUMBER'
@@ -116,7 +117,7 @@ node("${env.TRIVY_NODE}") {
                dir ("${env.SERVICE}") {
                    container("${env.TRIVY_CONTAINER}") {
                    kubeconfig(credentialsId: 'KubeConfigCred') {
-                   sh '/usr/local/bin/kubectl apply -f Deployment-beta.yaml -n dev'
+                   sh '/usr/local/bin/kubectl apply -f nodejs/Deployment-beta.yaml -n dev'
                    sh '/usr/local/bin/kubectl rollout restart Deployment $REGISTRY -n dev'
 
                    }
