@@ -73,7 +73,7 @@ node("${env.TRIVY_NODE}") {
                submoduleCfg:  [], 
                userRemoteConfigs: [[credentialsId: 'admingithub', 
                url: "$SSH_LINK_CENTRALIZED_FILES", 
-               poll: 'false']]]),
+               poll: 'false']]])
 	       sh 'ls -la Java/'
 	       sh 'cd Java/'
 	       sh 'pwd'
