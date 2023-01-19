@@ -34,14 +34,14 @@ if(params.TYPE == "java-11")
 
 node("${env.NODE_NAME}") {
       stage('Repo_Checkout') {
-             dir ('repo') {
+             dir ("${env.SERVICE}") {
              checkout([$class: 'GitSCM', branches: [[name: "$BRANCH"]], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg:  [], \
     userRemoteConfigs: [[credentialsId: 'admingithub', url: "$SSH_LINK", poll: 'false']]])
              }
       }
 	stage("${env.STAGE_NAME}") {
 	      container("${env.CONTAINER_NAME}") {
-            dir ('repo'){
+            dir ("${env.SERVICE}"){
 		    if (env.NODE_NAME == 'maven_runner_java11'  || env.NODE_NAME == 'maven_runner_java17' || env.NODE_NAME == 'maven-runner-18')
 		    {
                     	sh 'env'
@@ -65,7 +65,7 @@ node("${env.NODE_NAME}") {
 node("${env.TRIVY_NODE}") {
        try {
 	stage('Checkout_Centralized_Files') {
-           dir ('repo') {
+           dir ("${env.SERVICE}") {
                checkout([$class: 'GitSCM', 
                branches: [[name: "$BRANCH_CENTRALIZED_FILES"]], 
                doGenerateSubmoduleConfigurations: false, 
@@ -77,7 +77,7 @@ node("${env.TRIVY_NODE}") {
            }
        }
        stage('Build_image') {
-                dir ('repo') {
+                dir ("${env.SERVICE}") {
 			
 			container("${env.TRIVY_CONTAINER}") {
                   withCredentials([usernamePassword(credentialsId: 'docker_registry', passwordVariable: 'docker_pass', usernameVariable: 'docker_user')]) {
@@ -98,7 +98,7 @@ node("${env.TRIVY_NODE}") {
           }
        }
        stage('Deployment_stage') {
-               dir ('repo') {
+               dir ("${env.SERVICE}") {
                    container("${env.TRIVY_CONTAINER}") {
                    kubeconfig(credentialsId: 'KubeConfigCred') {
                    sh '/usr/local/bin/kubectl apply -f Deployment-beta.yaml -n dev'
