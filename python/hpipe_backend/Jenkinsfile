@@ -26,6 +26,7 @@ userRemoteConfigs: [[credentialsId: 'admingithub', url: 'git@github.com:Gemini-S
                url: "$SSH_LINK_CENTRALIZED_FILES", 
                poll: 'false']]])
 	       sh 'ls -la python/hpipe_backend/'
+	       sh 'ls'
 // 	       sh 'cd Java'
 	       sh 'pwd'
            }
