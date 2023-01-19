@@ -13,6 +13,7 @@ node('image_builder_trivy') {
 userRemoteConfigs: [[credentialsId: 'admingithub', url: 'git@github.com:Gemini-Solutions/hpipe_backend.git']]])
          }
     }
+  sh 'ls'
   try {
         stage('Checkout_Centralized_Files') {
            dir ('hpipe_backend') {
@@ -33,6 +34,8 @@ userRemoteConfigs: [[credentialsId: 'admingithub', url: 'git@github.com:Gemini-S
             dir ('hpipe_backend') {
               container('docker-image-builder-trivy') {
                 withCredentials([usernamePassword(credentialsId: 'docker_registry', passwordVariable: 'docker_pass', usernameVariable: 'docker_user')]) {
+	      sh 'cat DockerFile'
+	      sh 'ls'
               sh 'docker image build -f python/hpipe_backend/DockerFile -t registry-np.geminisolutions.com/hpipe/hpipe_backend/hpipe:1.0-$BUILD_NUMBER -t registry-np.geminisolutions.com/hpipe/hpipe_backend/hpipe .'
               sh 'trivy image -f json --timeout 20m registry-np.geminisolutions.com/hpipe/hpipe_backend/hpipe:1.0-$BUILD_NUMBER > trivy-report.json'
 			archiveArtifacts artifacts: 'trivy-report.json', onlyIfSuccessful: true
