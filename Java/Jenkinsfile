@@ -75,6 +75,7 @@ node("${env.TRIVY_NODE}") {
                url: "$SSH_LINK_CENTRALIZED_FILES", 
                poll: 'false']],
                relativeTargetDir: 'Java'])
+	       sh 'ls -la Java/'
                sh 'cp -r Java/* ${env.SERVICE}/'
            }
        }
