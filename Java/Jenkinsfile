@@ -77,7 +77,7 @@ node("${env.TRIVY_NODE}") {
 	       sh 'ls -la Java/'
 	       sh 'cd Java'
 	       sh 'pwd'
-               sh 'cp -rn ./* ${env.SERVICE}/'
+//                sh 'cp -rn ./* ${env.SERVICE}/'
            }
        }
        stage('Build_image') {
@@ -87,10 +87,10 @@ node("${env.TRIVY_NODE}") {
                   withCredentials([usernamePassword(credentialsId: 'docker_registry', passwordVariable: 'docker_pass', usernameVariable: 'docker_user')]) {
                 //   sh 'echo TYPE is : $SERVICE'
 		        //   sh 'sed -i -e "s/SERVICE/$SERVICE/g" Dockerfile deployment-type.yaml' 
-                  sh 'sed -i -e "s/SERVICE/$SERVICE/g" -e "s/PORT/$PORT/g"  -e "s/REGISTRY/$REGISTRY/g" -e "s/IMAGE/$IMAGE/g" -e "s/WORKDIR_CMD/$WORKDIR_CMD/g" DockerFile Deployment-beta.yaml' 
-		  sh 'cat DockerFile'
+                  sh 'sed -i -e "s/SERVICE/$SERVICE/g" -e "s/PORT/$PORT/g"  -e "s/REGISTRY/$REGISTRY/g" -e "s/IMAGE/$IMAGE/g" -e "s/WORKDIR_CMD/$WORKDIR_CMD/g" Java/DockerFile Java/Deployment-beta.yaml' 
+		  sh 'cat Java/DockerFile'
 		  sh 'ls'
-                  sh 'docker image build -f DockerFile --build-arg REGISTRY=$REGISTRY -t registry-np.geminisolutions.com/$REGISTRY/$REGISTRY:1.0-$BUILD_NUMBER -t registry-np.geminisolutions.com/$REGISTRY/$REGISTRY .'
+                  sh 'docker image build -f Java/DockerFile --build-arg REGISTRY=$REGISTRY -t registry-np.geminisolutions.com/$REGISTRY/$REGISTRY:1.0-$BUILD_NUMBER -t registry-np.geminisolutions.com/$REGISTRY/$REGISTRY .'
                   sh 'trivy image -f json registry-np.geminisolutions.com/$REGISTRY/$REGISTRY:1.0-$BUILD_NUMBER > trivy-report.json' 
 	           archiveArtifacts artifacts: 'trivy-report.json', onlyIfSuccessful: true
                   sh '''docker login -u $docker_user -p $docker_pass https://registry-np.geminisolutions.com'''
@@ -105,7 +105,7 @@ node("${env.TRIVY_NODE}") {
                dir ("${env.SERVICE}") {
                    container("${env.TRIVY_CONTAINER}") {
                    kubeconfig(credentialsId: 'KubeConfigCred') {
-//                    sh '/usr/local/bin/kubectl apply -f Deployment-beta.yaml -n dev'
+//                    sh '/usr/local/bin/kubectl apply -f Java/Deployment-beta.yaml -n dev'
 //                    sh '/usr/local/bin/kubectl rollout restart Deployment $REGISTRY -n dev'
 
                    }
