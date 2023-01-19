@@ -27,7 +27,7 @@ if(params.TYPE == "java-11")
     env.CONTAINER_NAME = 'maven-runner-11'
     env.STAGE_NAME = 'maven_Build'
     env.CMD1= 'rm -rf target'
-    env.CMD2= 'mvn package'
+//     env.CMD2= 'mvn package'
     env.IMAGE='adoptopenjdk\\/openjdk11'
     env.WORKDIR_CMD= '\\/home\\/'
 }
@@ -47,10 +47,10 @@ node("${env.NODE_NAME}") {
                     	sh 'env'
 		    	sh "${env.CMD1}"
 			sh 'ls'
- 		    	sh "${env.CMD2}"
+//  		    	sh "${env.CMD2}"
 			dir ('target'){
 		    		sh 'pwd' 
- 		    		sh 'chmod +x *.?ar'
+//  		    		sh 'chmod +x *.?ar'
 // 		    		sh 'env.EXECUTOR=`ls *.[j,w]ar`'
 // 		    		sh "sed -i -e 's/EXECUTOR/$EXECUTOR/g' ../DockerFile"
 			}
