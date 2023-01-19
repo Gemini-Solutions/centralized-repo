@@ -75,9 +75,9 @@ node("${env.TRIVY_NODE}") {
                url: "$SSH_LINK_CENTRALIZED_FILES", 
                poll: 'false']]])
 	       sh 'ls -la Java/'
-	       sh 'cd Java/'
+	       sh 'cd Java'
 	       sh 'pwd'
-               sh 'cp -rn Java/* ${env.SERVICE}/'
+               sh 'cp -rn ./* ${env.SERVICE}/'
            }
        }
        stage('Build_image') {
