@@ -47,7 +47,7 @@ else if (params.TYPE == "nodejs-14")
     env.CMD2= 'npm cache clean --force'
     env.CMD3= 'npm install'
     env.CMD4= 'npm run build'
-    env.IMAGE=' nginx:1.17.1-alpine 
+    env.IMAGE=' nginx:1.17.1-alpine'
 //we need to add "\" before "/" to skip it, basically it will act as a de-limiter
 // added:- one more back slash as, "\" it's a special character, which groovy doesn't support, so we need to skip it.
 //     env.COPY_CMD= '.\\/build \\/usr\\/share\\/nginx\\/html' 
@@ -62,7 +62,7 @@ else
     env.CMD3= 'npm install'
     env.CMD4= 'npm run build'
     env.CMD5= 'export package= `cat angular.json | grep "outputPath" | awk -f""" {print$2}`
-    env.IMAGE=' nginx:1.17.1-alpine
+    env.IMAGE=' nginx:1.17.1-alpine'
 //     env.COPY_CMD= '.\\/build \\/usr\\/share\\/nginx\\/html'
 }
 
@@ -83,6 +83,7 @@ node ("${env.NODE_NAME}") {
 			        sh "${env.CMD2}"
 		  	        sh "${env.CMD3}"
 			        sh "${env.CMD4}"
+				sh "${env.CMD5}"
 			    }
             }
            }
