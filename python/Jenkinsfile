@@ -30,7 +30,7 @@ userRemoteConfigs: [[credentialsId: 'admingithub', url: "$SSH_LINK"]]])
     }
        try {
         stage('Checkout_Centralized_Files') {
-           dir ("${env.SERVICE}/python") {
+           dir ("${env.SERVICE}/centralized") {
                checkout([$class: 'GitSCM', 
                branches: [[name: "$BRANCH_CENTRALIZED_FILES"]], 
                doGenerateSubmoduleConfigurations: false, 
@@ -52,8 +52,8 @@ userRemoteConfigs: [[credentialsId: 'admingithub', url: "$SSH_LINK"]]])
 		        //   sh 'sed -i -e "s/SERVICE/$SERVICE/g" DockerFile deployment-type.yaml' 
 		  sh 'ls'
 		  sh 'pwd/python/ | cat DockerFile'
-                  sh 'sed -i -e "s/PORT/$PORT/g" -e "s/REGISTRY/$REGISTRY/g" -e "s/COPY_CMD/$COPY_CMD/g" -e "s/IMAGE/$IMAGE/g" python/DockerFile python/Deployment-beta.yaml'
-		          sh 'cat python/DockerFile'	  
+                  sh 'sed -i -e "s/PORT/$PORT/g" -e "s/REGISTRY/$REGISTRY/g" -e "s/COPY_CMD/$COPY_CMD/g" -e "s/IMAGE/$IMAGE/g" centralized/python/DockerFile centralized/python/Deployment-beta.yaml'
+		          sh 'cat centralized/python/DockerFile'	  
                   sh 'docker image build -f ./python/DockerFile --build-arg REGISTRY=$REGISTRY -t registry-np.geminisolutions.com/$REGISTRY:1.0-$BUILD_NUMBER -t registry-np.geminisolutions.com/$REGISTRY .'
                   sh 'trivy image -f json registry-np.geminisolutions.com/$REGISTRY:1.0-$BUILD_NUMBER > trivy-report.json' archiveArtifacts artifacts: 'trivy-report.json', onlyIfSuccessful: true
 //                   sh '''docker login -u $docker_user -p $docker_pass https://registry-np.geminisolutions.com'''
