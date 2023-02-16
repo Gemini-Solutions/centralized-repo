@@ -45,7 +45,7 @@ userRemoteConfigs: [[credentialsId: 'admingithub', url: "$SSH_LINK"]]])
            }
        }
        stage('Build_image') {
-                dir ("${env.SERVICE}) {
+                dir ("${env.SERVICE}") {
 			container("${env.TRIVY_CONTAINER}") {
                   withCredentials([usernamePassword(credentialsId: 'docker_registry', passwordVariable: 'docker_pass', usernameVariable: 'docker_user')]) {
                 //   sh 'echo TYPE is : $SERVICE'
