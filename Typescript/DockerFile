@@ -1,2 +1,2 @@
 FROM IMAGE
-COPY ../dist/REGISTRY /usr/share/nginx/html
+COPY ../package /usr/share/nginx/html
