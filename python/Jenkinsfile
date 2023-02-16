@@ -39,7 +39,7 @@ userRemoteConfigs: [[credentialsId: 'admingithub', url: "$SSH_LINK"]]])
                userRemoteConfigs: [[credentialsId: 'admingithub', 
                url: "$SSH_LINK_CENTRALIZED_FILES", 
                poll: 'false']]])
-	       sh 'ls -la python/'
+	       sh 'ls -la'
 // 	       sh 'cd Java'
 	       sh 'pwd'
            }
