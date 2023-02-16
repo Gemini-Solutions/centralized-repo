@@ -1,7 +1,7 @@
 properties([
     parameters([
-        choice(name: "SERVICE", choices: ["service-name"], description: "services to be build"),
-        choice(name: "PORT", choices: ["8081", "80", "8080", "8999"], description: "port to be used"),
+        choice(name: "SERVICE", choices: ["genric-backend"], description: "services to be build"),
+        choice(name: "PORT", choices: ["8085"], description: "port to be used"),
     ])
 ])
 
@@ -12,8 +12,8 @@ env.SSH_LINK_CENTRALIZED_FILES="git@github.com:Gemini-Solutions/centralized-repo
 
 if(params.SERVICE=="service-name")
 {
-    env.SSH_LINK= 'LINK OF GITHUB OF APPLICATION'
-    env.BRANCH= "*/branch-of-application*"
+    env.SSH_LINK= 'git@github.com:Gemini-Solutions/generic_workflow_backend.git'
+    env.BRANCH= "*/dev*"
 }
 
 env.REGISTRY= params.SERVICE.toLowerCase()
