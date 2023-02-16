@@ -55,7 +55,8 @@ userRemoteConfigs: [[credentialsId: 'admingithub', url: "$SSH_LINK"]]])
                   sh 'sed -i -e "s/PORT/$PORT/g" -e "s/REGISTRY/$REGISTRY/g" -e "s/COPY_CMD/$COPY_CMD/g" -e "s/IMAGE/$IMAGE/g" centralized/python/DockerFile centralized/python/Deployment-beta.yaml'
 		          sh 'cat centralized/python/DockerFile'	  
                   sh 'docker image build -f centralized/python/DockerFile --build-arg REGISTRY=$REGISTRY -t registry-np.geminisolutions.com/$REGISTRY:1.0-$BUILD_NUMBER -t registry-np.geminisolutions.com/$REGISTRY .'
-                  sh 'trivy image -f json registry-np.geminisolutions.com/$REGISTRY:1.0-$BUILD_NUMBER > trivy-report.json' archiveArtifacts artifacts: 'trivy-report.json', onlyIfSuccessful: true
+                  sh 'trivy image -f json registry-np.geminisolutions.com/$REGISTRY:1.0-$BUILD_NUMBER > trivy-report.json' 
+		  archiveArtifacts artifacts: 'trivy-report.json', onlyIfSuccessful: true
 //                   sh '''docker login -u $docker_user -p $docker_pass https://registry-np.geminisolutions.com'''
 //                   sh 'docker push registry-np.geminisolutions.com/$REGISTRY:1.0-$BUILD_NUMBER'
 //                   sh 'docker push registry-np.geminisolutions.com/$REGISTRY'
