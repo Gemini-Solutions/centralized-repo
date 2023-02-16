@@ -3,12 +3,12 @@ FROM python:3.9-buster
 WORKDIR /code
 
 # install supervisor
-#RUN apt-get update
+RUN apt-get update
 
-#RUN apt-get install -y supervisor
+RUN apt-get install -y supervisor
 
 # copy our script
-#COPY ./supervisor.conf /etc/supervisor/conf.d/supervisord.conf
+COPY ./supervisor.conf /etc/supervisor/conf.d/supervisord.conf
 
 # make them executable
 # RUN chmod +x /usr/src/app/scripts/*.sh
