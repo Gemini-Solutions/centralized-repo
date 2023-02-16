@@ -1,7 +1,7 @@
 properties([
     parameters([
 	    choice(name: "TYPE", choices: ["nodejs-16", "nodejs-14", "nodejs-12"], description: "LANGUAGES"),
-        choice(name: "SERVICE", choices: ["generic-workflow-frontend"], description: "services to be build"),
+        choice(name: "SERVICE", choices: ["gen-frontend"], description: "services to be build"),
         choice(name: "PORT", choices: ["8081", "80", "8080", "8999"], description: "port to be used"),
     ])
 ])
