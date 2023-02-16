@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
         - name: REGISTRY
-          image: registry-np.geminisolutions.com/REGISTRY
+          image: registry-np.geminisolutions.com/IMAGE_FOLDER/REGISTRY:latest
           ports:
             - name: REGISTRY
               containerPort: PORT
