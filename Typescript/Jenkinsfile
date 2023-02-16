@@ -13,7 +13,7 @@ env.SSH_LINK_CENTRALIZED_FILES="git@github.com:Gemini-Solutions/centralized-repo
 //Please specify the branch Name
 if (params.SERVICE=="genric-frontend")
 {
-	env.BRANCH="*/main"
+	env.BRANCH="*/dev"
 	env.SSH_LINK='git@github.com:Gemini-Solutions/generic_workflow_frontend.git'
 }
 
