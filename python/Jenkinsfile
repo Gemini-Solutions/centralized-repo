@@ -30,7 +30,7 @@ userRemoteConfigs: [[credentialsId: 'admingithub', url: "$SSH_LINK"]]])
     }
        try {
         stage('Checkout_Centralized_Files') {
-           dir ("${env.SERVICE}") {
+           dir ("${env.SERVICE}/python") {
                checkout([$class: 'GitSCM', 
                branches: [[name: "$BRANCH_CENTRALIZED_FILES"]], 
                doGenerateSubmoduleConfigurations: false, 
