@@ -10,7 +10,7 @@ env.MAINTAINER= "maintainer@geminisolutions.com"
 env.BRANCH_CENTRALIZED_FILES="*/main"
 env.SSH_LINK_CENTRALIZED_FILES="git@github.com:Gemini-Solutions/centralized-repo.git"
 
-if(params.SERVICE=="service-name")
+if(params.SERVICE=="genric-backend")
 {
     env.SSH_LINK= 'git@github.com:Gemini-Solutions/generic_workflow_backend.git'
     env.BRANCH= "*/dev*"
