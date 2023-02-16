@@ -34,7 +34,7 @@ if (params.TYPE == "nodejs-16")
     env.CMD2= 'npm cache clean --force'
     env.CMD3= 'npm install'
     env.CMD4= 'npm run build'
-    env.IMAGE='node:16'
+    env.IMAGE=' nginx:1.17.1-alpine'
 //     env.COPY_CMD= '.\\/build \\/usr\\/share\\/nginx\\/html' 
 } 
 
@@ -43,9 +43,11 @@ else if (params.TYPE == "nodejs-14")
     env.NODE_NAME = 'nodejs_runner_14' 
     env.CONTAINER_NAME = 'nodejs-14'
     env.STAGE_NAME = 'Nodejs_Build'
-    env.CMD1= 'npm install' 
-    env.CMD2= 'npm run build'
-    env.IMAGE=' nginx:1.17.1-alpine' 
+    env.CMD1= 'rm -rf package-lock.json'
+    env.CMD2= 'npm cache clean --force'
+    env.CMD3= 'npm install'
+    env.CMD4= 'npm run build'
+    env.IMAGE=' nginx:1.17.1-alpine 
 //we need to add "\" before "/" to skip it, basically it will act as a de-limiter
 // added:- one more back slash as, "\" it's a special character, which groovy doesn't support, so we need to skip it.
 //     env.COPY_CMD= '.\\/build \\/usr\\/share\\/nginx\\/html' 
@@ -55,9 +57,11 @@ else
     env.NODE_NAME = 'nodejs_runner'
     env.CONTAINER_NAME = 'nodejs-12'
     env.STAGE_NAME = 'Nodejs_Build' 
-    env.CMD1= 'npm install'
-    env.CMD2= 'npm run build'
-    env.IMAGE='nginx:1.17.1-alpine'
+    env.CMD1= 'rm -rf package-lock.json'
+    env.CMD2= 'npm cache clean --force'
+    env.CMD3= 'npm install'
+    env.CMD4= 'npm run build'
+    env.IMAGE=' nginx:1.17.1-alpine
 //     env.COPY_CMD= '.\\/build \\/usr\\/share\\/nginx\\/html'
 }
 
