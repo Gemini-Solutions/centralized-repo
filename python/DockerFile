@@ -8,20 +8,20 @@ WORKDIR /code
 #RUN apt-get install -y supervisor
 
 # copy our script
-#COPY ../supervisor.conf /etc/supervisor/conf.d/supervisord.conf
+#COPY ./supervisor.conf /etc/supervisor/conf.d/supervisord.conf
 
 # make them executable
 # RUN chmod +x /usr/src/app/scripts/*.sh
 
-COPY ../schedule_job/weekly_email/requirements.txt /code/schedule_job/weekly_email/requirements.txt
+COPY ./schedule_job/weekly_email/requirements.txt /code/schedule_job/weekly_email/requirements.txt
 
 RUN pip install --no-cache-dir --upgrade -r /code/schedule_job/weekly_email/requirements.txt
 
 WORKDIR /code/schedule_job/weekly_email
 
-COPY ../schedule_job /code/schedule_job
+COPY ./schedule_job /code/schedule_job
 
-COPY ../requirements.txt /code/requirements.txt
+COPY ./requirements.txt /code/requirements.txt
 
 WORKDIR /code
 
