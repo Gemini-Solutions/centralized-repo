@@ -74,11 +74,13 @@ node ("${env.NODE_NAME}") {
     userRemoteConfigs: [[credentialsId: 'admingithub', url: "$SSH_LINK", poll: 'false']]])
              }
       }
+	sh 'ls'
 	stage("${env.STAGE_NAME}") {
 	      container("${env.CONTAINER_NAME}") {
             dir ("${env.SERVICE}"){
 		    if (env.NODE_NAME == 'nodejs_runner_16'  || env.NODE_NAME == 'nodejs_runner_14' || env.NODE_NAME == 'nodejs_runner')
 			    {
+			sh 'ls'
                   	sh 'env'
 		  	        sh "${env.CMD1}"
 			        sh "${env.CMD2}"
