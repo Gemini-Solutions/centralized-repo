@@ -45,12 +45,11 @@ userRemoteConfigs: [[credentialsId: 'admingithub', url: "$SSH_LINK"]]])
            }
        }
        stage('Build_image') {
-                dir ("${env.SERVICE}") {
+                dir ("${env.SERVICE}/python") {
 			container("${env.TRIVY_CONTAINER}") {
                   withCredentials([usernamePassword(credentialsId: 'docker_registry', passwordVariable: 'docker_pass', usernameVariable: 'docker_user')]) {
                 //   sh 'echo TYPE is : $SERVICE'
 		        //   sh 'sed -i -e "s/SERVICE/$SERVICE/g" DockerFile deployment-type.yaml' 
-		  sh 'cd python'
 		  sh 'ls'
 		  sh 'pwd'
                   sh 'sed -i -e "s/PORT/$PORT/g" -e "s/REGISTRY/$REGISTRY/g" -e "s/COPY_CMD/$COPY_CMD/g" -e "s/IMAGE/$IMAGE/g" ./python/DockerFile ./python/Deployment-beta.yaml'
