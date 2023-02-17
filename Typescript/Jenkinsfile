@@ -32,10 +32,11 @@ if (params.TYPE == "nodejs-16")
     env.STAGE_NAME = 'Nodejs_Build'
     env.CMD1= 'rm -rf package-lock.json'
     env.CMD2= 'npm cache clean --force'
-    env.CMD3= 'npm install'
-    env.CMD4= 'npm run build'
+    env.CMD3= 'npm install --force'
+    env.CMD4= 'mpn install -g @angular/cli@11.2.13
+    env.CMD5= 'npm run build'
 //     env.CMD5= 'export package=`cat angular.json | grep "outputPath" | awk -F"\"" '{print $2}'`'
-    env.CMD5= 'export package=`cat angular.json | grep "outputPath" | awk -F"\"" \'{print $2}\'` && echo $package'
+    env.CMD6= 'export package=`cat angular.json | grep "outputPath" | awk -F"\"" \'{print $2}\'` && echo $package'
     env.IMAGE=' nginx:1.17.1-alpine'
 //     env.COPY_CMD= '.\\/build \\/usr\\/share\\/nginx\\/html' 
 } 
@@ -47,8 +48,9 @@ else if (params.TYPE == "nodejs-14")
     env.STAGE_NAME = 'Nodejs_Build'
     env.CMD1= 'rm -rf package-lock.json'
     env.CMD2= 'npm cache clean --force'
-    env.CMD3= 'npm install'
-    env.CMD4= 'npm run build'
+    env.CMD3= 'npm install --force'
+    env.CMD4= 'mpn install -g @angular/cli@11.2.13
+    env.CMD5= 'npm run build'
 //     env.CMD5= 'export package=`cat angular.json | grep "outputPath" | awk -F"\"" '{print $2}'`&& echo $package'
     env.CMD5= 'export package=`cat angular.json | grep "outputPath" | awk -F"\"" \'{print $2}\'` && echo $package'
     env.IMAGE=' nginx:1.17.1-alpine'
@@ -92,6 +94,7 @@ node ("${env.NODE_NAME}") {
 		  	        sh "${env.CMD3}"
 			        sh "${env.CMD4}"
 				sh "${env.CMD5}"
+				sh "${env.CMD6}"
 			    }
             }
            }
