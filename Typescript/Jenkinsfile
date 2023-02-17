@@ -33,7 +33,7 @@ if (params.TYPE == "nodejs-16")
     env.CMD1= 'rm -rf package-lock.json'
     env.CMD2= 'npm cache clean --force'
     env.CMD3= 'npm install --force'
-    env.CMD4= 'mpn install -g @angular/cli@11.2.13
+    env.CMD4= 'npn install -g @angular/cli@11.2.13'
     env.CMD5= 'npm run build'
 //     env.CMD5= 'export package=`cat angular.json | grep "outputPath" | awk -F"\"" '{print $2}'`'
     env.CMD6= 'export package=`cat angular.json | grep "outputPath" | awk -F"\"" \'{print $2}\'` && echo $package'
@@ -49,7 +49,7 @@ else if (params.TYPE == "nodejs-14")
     env.CMD1= 'rm -rf package-lock.json'
     env.CMD2= 'npm cache clean --force'
     env.CMD3= 'npm install --force'
-    env.CMD4= 'mpn install -g @angular/cli@11.2.13
+    env.CMD4= 'npn install -g @angular/cli@11.2.13'
     env.CMD5= 'npm run build'
 //     env.CMD5= 'export package=`cat angular.json | grep "outputPath" | awk -F"\"" '{print $2}'`&& echo $package'
     env.CMD5= 'export package=`cat angular.json | grep "outputPath" | awk -F"\"" \'{print $2}\'` && echo $package'
