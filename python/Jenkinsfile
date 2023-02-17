@@ -1,7 +1,7 @@
 properties([
     parameters([
-        choice(name: "SERVICE", choices: ["genric-backend"], description: "services to be build"),
-        choice(name: "PORT", choices: ["8085"], description: "port to be used"),
+        choice(name: "SERVICE", choices: ["genric-backend", "helpdesk"], description: "services to be build"),
+        choice(name: "PORT", choices: ["8085", "80"], description: "port to be used"),
     ])
 ])
 
