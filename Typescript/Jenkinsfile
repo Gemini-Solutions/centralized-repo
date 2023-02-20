@@ -126,13 +126,13 @@ node("${env.TRIVY_NODE}") {
                   withCredentials([usernamePassword(credentialsId: 'docker_registry', passwordVariable: 'docker_pass', usernameVariable: 'docker_user')]) {
                 //   sh 'echo TYPE is : $SERVICE'
 		        //   sh 'sed -i -e "s/SERVICE/$SERVICE/g" DockerFile deployment-type.yaml' 
-                  sh 'sed -i -e "s/PORT/$PORT/g" -e "s/REGISTRY/$REGISTRY/g" -e "s/COPY_CMD/$COPY_CMD/g" -e "s/IMAGE/$IMAGE/g" "s/package/$package/g" centralized/Typescript/DockerFile centralized/Typescript/Deployment-beta.yaml'
+                  sh 'sed -i -e "s/PORT/$PORT/g" -e "s/REGISTRY/$REGISTRY/g" -e "s/COPY_CMD/$COPY_CMD/g" -e "s/IMAGE/$IMAGE/g" centralized/Typescript/DockerFile centralized/Typescript/Deployment-beta.yaml'
 		          sh 'cat centralized/Typescript/DockerFile'	  
                   sh 'docker image build -f centralized/Typescript/DockerFile --build-arg REGISTRY=$REGISTRY -t registry-np.geminisolutions.com/$REGISTRY:1.0-$BUILD_NUMBER -t registry-np.geminisolutions.com/$REGISTRY .'
                   sh 'trivy image -f json registry-np.geminisolutions.com/$REGISTRY:1.0-$BUILD_NUMBER > trivy-report.json' archiveArtifacts artifacts: 'trivy-report.json', onlyIfSuccessful: true
                   sh '''docker login -u $docker_user -p $docker_pass https://registry-np.geminisolutions.com'''
-//                   sh 'docker push registry-np.geminisolutions.com/$REGISTRY:1.0-$BUILD_NUMBER'
-//                   sh 'docker push registry-np.geminisolutions.com/$REGISTRY'
+                  sh 'docker push registry-np.geminisolutions.com/$REGISTRY:1.0-$BUILD_NUMBER'
+                  sh 'docker push registry-np.geminisolutions.com/$REGISTRY'
                   sh 'rm -rf build/'
                }
              }
@@ -142,8 +142,8 @@ node("${env.TRIVY_NODE}") {
                dir ("${env.SERVICE}") {
                    container("${env.TRIVY_CONTAINER}") {
                    kubeconfig(credentialsId: 'KubeConfigCred') {
-//                    sh '/usr/local/bin/kubectl apply -f centralized/Typescript/Deployment-beta.yaml -n dev'
-//                    sh '/usr/local/bin/kubectl rollout restart Deployment $REGISTRY -n dev'
+                   sh '/usr/local/bin/kubectl apply -f centralized/Typescript/Deployment-beta.yaml -n dev'
+                   sh '/usr/local/bin/kubectl rollout restart Deployment $REGISTRY -n dev'
 
                    }
                  }
