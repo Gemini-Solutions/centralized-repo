@@ -6,7 +6,7 @@ COPY . .
 
 RUN pip install -r requirements.txt
 
-COPY ./amc_calculator/static /code/amc_calculator
+COPY ./amc_calculator/static /code/
 
 EXPOSE 8080
 
