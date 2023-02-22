@@ -2,13 +2,11 @@ FROM python:3.9
 
 WORKDIR /code
 
-# COPY . .
-COPY ./requirements.txt /code/requirements.txt
+COPY . .
 
-COPY ./amc_calculator /code/amc_calculator
+RUN pip install -r requirements.txt
 
-# RUN pip install -r requirements.txt
-RUN pip install --no-cache-dir --upgrade -r /code/requirements.txt
+COPY ./amc_calculator/static /code/amc_calculator
 
 EXPOSE 8080
 
