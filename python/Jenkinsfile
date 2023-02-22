@@ -34,7 +34,10 @@ userRemoteConfigs: [[credentialsId: 'admingithub', url: "$SSH_LINK"]]])
                checkout([$class: 'GitSCM', 
                branches: [[name: "$BRANCH_CENTRALIZED_FILES"]], 
                doGenerateSubmoduleConfigurations: false, 
-               extensions: [], 
+               extensions: [ 
+		       [$class: 'CloneOption', noTags: true, depth: 1],
+                       [$class: 'PathRestriction', includedRegions: 'python/**']
+	            ], 
                submoduleCfg:  [], 
                userRemoteConfigs: [[credentialsId: 'admingithub', 
                url: "$SSH_LINK_CENTRALIZED_FILES", 
@@ -56,9 +59,9 @@ userRemoteConfigs: [[credentialsId: 'admingithub', url: "$SSH_LINK"]]])
                   sh 'docker image build -f centralized/python/DockerFile --build-arg REGISTRY=$REGISTRY -t registry-np.geminisolutions.com/$REGISTRY:1.0-$BUILD_NUMBER -t registry-np.geminisolutions.com/$REGISTRY .'
                   sh 'trivy image -f json registry-np.geminisolutions.com/$REGISTRY:1.0-$BUILD_NUMBER > trivy-report.json' 
 		  archiveArtifacts artifacts: 'trivy-report.json', onlyIfSuccessful: true
-                  sh '''docker login -u $docker_user -p $docker_pass https://registry-np.geminisolutions.com'''
-                  sh 'docker push registry-np.geminisolutions.com/$REGISTRY:1.0-$BUILD_NUMBER'
-                  sh 'docker push registry-np.geminisolutions.com/$REGISTRY'
+//                   sh '''docker login -u $docker_user -p $docker_pass https://registry-np.geminisolutions.com'''
+//                   sh 'docker push registry-np.geminisolutions.com/$REGISTRY:1.0-$BUILD_NUMBER'
+//                   sh 'docker push registry-np.geminisolutions.com/$REGISTRY'
                   sh 'rm -rf build/'
                }
              }
@@ -68,8 +71,8 @@ userRemoteConfigs: [[credentialsId: 'admingithub', url: "$SSH_LINK"]]])
                dir ("${env.SERVICE}") {
                    container("${env.TRIVY_CONTAINER}") {
                    kubeconfig(credentialsId: 'KubeConfigCred') {
-                   sh '/usr/local/bin/kubectl apply -f centralized/python/Deployment-beta.yaml -n dev'
-                   sh '/usr/local/bin/kubectl rollout restart Deployment $REGISTRY -n dev'
+//                    sh '/usr/local/bin/kubectl apply -f centralized/python/Deployment-beta.yaml -n dev'
+//                    sh '/usr/local/bin/kubectl rollout restart Deployment $REGISTRY -n dev'
 
                    }
                  }
