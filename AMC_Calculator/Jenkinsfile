@@ -26,7 +26,7 @@ userRemoteConfigs: [[credentialsId: 'admingithub', url: 'git@github.com:Gemini-S
               container('docker-image-builder-trivy') {
                 withCredentials([usernamePassword(credentialsId: 'docker_registry', passwordVariable: 'docker_pass', usernameVariable: 'docker_user')]) {
               sh 'docker image build -f centralized/AMC_Calculator/Dockerfile -t registry-np.geminisolutions.com/amc_calculator/amc_calculator_frontend/amc_calculator:1.0-$BUILD_NUMBER -t registry-np.geminisolutions.com/amc_calculator/amc_calculator_frontend/amc_calculator .'
-              sh 'trivy image -f json --timeout 20m registry-np.geminisolutions.com/amc_calculator/amc_calculator_frontend/amc_calculator:1.0-$BUILD_NUMBER > trivy-report.json'
+              sh 'trivy image -f json --offline-scan --timeout 20m registry-np.geminisolutions.com/amc_calculator/amc_calculator_frontend/amc_calculator:1.0-$BUILD_NUMBER > trivy-report.json'
 	      archiveArtifacts artifacts: 'trivy-report.json', onlyIfSuccessful: true
                    sh '''docker login -u $docker_user -p $docker_pass https://registry-np.geminisolutions.com'''
               sh 'docker push registry-np.geminisolutions.com/amc_calculator/amc_calculator_frontend/amc_calculator:1.0-$BUILD_NUMBER'
