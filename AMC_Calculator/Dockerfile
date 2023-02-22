@@ -10,4 +10,4 @@ COPY ./amc_calculator /code/amc_calculator
 
 EXPOSE 8080
 
-CMD ["uvicorn", "amc_calculator.main:app", "--host", "0.0.0.0", "--port", "8080"]
+CMD ["uvicorn", "./amc_calculator.main:app", "--host", "0.0.0.0", "--port", "8080"]
