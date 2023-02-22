@@ -1,26 +1,26 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: amc_calculator
+  name: amc-calculator
   namespace: dev
   labels:
-    app: amc_calculator
+    app: amc-calculator
 spec:
   replicas: 1
   revisionHistoryLimit: 0
   selector:
     matchLabels:
-      app: amc_calculator
+      app: amc-calculator
   template:
     metadata:
       labels:
-        app: amc_calculator
+        app: amc-calculator
     spec:
       containers:
       - name: retinadev
         image: registry-np.geminisolutions.com/amc_calculator/amc_calculator_frontend/amc_calculator
         ports:
-          - name: amc_calculator
+          - name: amc-calculator
             containerPort: 8080
         imagePullPolicy: Always
       imagePullSecrets:
