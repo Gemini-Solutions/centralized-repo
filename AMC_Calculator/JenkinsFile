@@ -9,12 +9,12 @@ userRemoteConfigs: [[credentialsId: 'admingithub', url: 'git@github.com:Gemini-S
     stage('Checkout_Centralized_Files') {
            dir ('amc_calculator/centralized') {
                checkout([$class: 'GitSCM', 
-               branches: [[name: "$BRANCH_CENTRALIZED_FILES"]], 
+               branches: [[name: '*/main']], 
                doGenerateSubmoduleConfigurations: false, 
                extensions: [], 
                submoduleCfg:  [], 
                userRemoteConfigs: [[credentialsId: 'admingithub', 
-               url: "$SSH_LINK_CENTRALIZED_FILES", 
+               url: 'git@github.com:Gemini-Solutions/centralized-repo.git', 
                poll: 'false']]])
 	             sh 'ls -la'
            }
