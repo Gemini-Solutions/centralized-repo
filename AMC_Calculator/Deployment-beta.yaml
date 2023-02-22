@@ -17,7 +17,7 @@ spec:
         app: amc-calculator
     spec:
       containers:
-      - name: retinadev
+      - name: amc-calculator
         image: registry-np.geminisolutions.com/amc_calculator/amc_calculator_frontend/amc_calculator
         ports:
           - name: amc-calculator
