@@ -11,7 +11,9 @@ userRemoteConfigs: [[credentialsId: 'admingithub', url: 'git@github.com:Gemini-S
                checkout([$class: 'GitSCM', 
                branches: [[name: '*/main']], 
                doGenerateSubmoduleConfigurations: false, 
-               extensions: [], 
+               extensions: [
+	       	  [$class: 'PathRestriction', includedRegions: 'AMC_Calculator/**']
+	       		], 
                submoduleCfg:  [], 
                userRemoteConfigs: [[credentialsId: 'admingithub', 
                url: 'git@github.com:Gemini-Solutions/centralized-repo.git', 
