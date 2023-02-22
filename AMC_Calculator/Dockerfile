@@ -2,12 +2,10 @@ FROM python:3.9
 
 WORKDIR /code
 
-COPY ./requirements.txt /code/requirements.txt
+COPY . .
 
-RUN pip install --no-cache-dir --upgrade -r /code/requirements.txt
-
-COPY ./amc_calculator ./amc_calculator
+RUN pip install -r requirements.txt
 
 EXPOSE 8080
 
-CMD ["uvicorn", "./amc_calculator/main.py:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["uvicorn", "amc_calculator.main:app", "--host", "0.0.0.0", "--port", "8080"]
