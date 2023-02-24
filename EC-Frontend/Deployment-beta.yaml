@@ -1,26 +1,26 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: EC-Dashboard
+  name: ec-dashboard
   namespace: dev
   labels:
-    app: EC-Dashboard
+    app: ec-dashboard
 spec:
   replicas: 1
   revisionHistoryLimit: 0
   selector:
     matchLabels:
-      app: EC-Dashboard
+      app: ec-dashboard
   template:
     metadata:
       labels:
-        app: EC-Dashboard
+        app: ec-dashboard
     spec:
       containers:
-      - name: EC-Dashboard
-        image: registry-np.geminisolutions.com/EC-Dashboard/EC-Dashboard
+      - name: ec-dashboard
+        image: registry-np.geminisolutions.com/ec-dashboard/ec-dashboard
         ports:
-        - name: EC-Dashboard
+        - name: ec-dashboard
           containerPort: 8080
         imagePullPolicy: Always
       imagePullSecrets: 
