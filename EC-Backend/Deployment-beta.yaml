@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
       - name: ec-backend
-        image: registry-np.geminisolutions.com/ec_backend/ec_backend
+        image: registry-np.geminisolutions.com/ec_backend/ec_backend:latest
         ports:
         - name: ec-backend
           containerPort: 5000
