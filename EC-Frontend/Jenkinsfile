@@ -7,7 +7,7 @@ node('node_runner_18') {
       }
 	      
       stage('Nodejs_Build') {
-            container('nodejs-18') 
+	      container('nodejs-18') {
                 dir ('EC-Dashboard'){
                   sh 'rm -rf package-lock.json'
                   //sh 'npm cache clean --force'
@@ -15,7 +15,7 @@ node('node_runner_18') {
                   sh 'npm run build'
             }
            }
-         
+      }
 }
     node('image_builder_trivy') {
        try {
