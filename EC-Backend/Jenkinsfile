@@ -28,7 +28,7 @@ node('image_builder_trivy') {
       dir('ECBackend') {
         container('docker-image-builder-trivy') {
           withCredentials([usernamePassword(credentialsId: 'docker_registry', passwordVariable: 'docker_pass', usernameVariable: 'docker_user')]) {
-            sh 'docker image build -f ECBackend/centralized/DockerFile -t registry-np.geminisolutions.com/ec_backend/ec_backend:1.0-$BUILD_NUMBER -t registry-np.geminisolutions.com/ec_backend/ec_backend .'
+            sh 'docker image build -f ECBackend/centralized/Dockerfile -t registry-np.geminisolutions.com/ec_backend/ec_backend:1.0-$BUILD_NUMBER -t registry-np.geminisolutions.com/ec_backend/ec_backend .'
             sh 'trivy image -f json --timeout 20m registry-np.geminisolutions.com/ec_backend/ec_backend:1.0-$BUILD_NUMBER > trivy-report.json'
             archiveArtifacts artifacts: 'trivy-report.json', onlyIfSuccessful: true
             sh ''
