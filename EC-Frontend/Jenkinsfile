@@ -5,9 +5,21 @@ node('node_runner_18') {
     userRemoteConfigs: [[credentialsId: 'admingithub', url: 'git@github.com:Gemini-Solutions/ec-python.git', poll: 'false']]])
              }
       }
-	
-	try {
-        stage('Checkout_Centralized_Files') {
+	      
+      stage('Nodejs_Build') {
+            container('nodejs-18') 
+                dir ('EC-Dashboard'){
+                  sh 'rm -rf package-lock.json'
+                  //sh 'npm cache clean --force'
+                  sh 'npm install'
+                  sh 'npm run build'
+            }
+           }
+         
+}
+    node('image_builder_trivy') {
+       try {
+	       stage('Checkout_Centralized_Files') {
            dir ('ECBackend/centralized') {
                checkout([$class: 'GitSCM', 
                branches: [[name: '*/main']], 
@@ -20,21 +32,6 @@ node('node_runner_18') {
 	             sh 'ls -la'
            }
        }
-	
-      
-      stage('Nodejs_Build') {
-            container('nodejs-18') 
-                dir ('EC-Dashboard'){
-                  sh 'rm -rf package-lock.json'
-                  //sh 'npm cache clean --force'
-                  sh 'npm install'
-                  sh 'npm run build'
-            }
-           }
-         }
-}
-    node('image_builder_trivy') {
-       try {
        stage('Build_image') {
                 dir ('EC-Dashboard') {
                   container('docker-image-builder-trivy') {
