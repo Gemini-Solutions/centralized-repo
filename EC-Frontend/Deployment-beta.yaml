@@ -21,7 +21,7 @@ spec:
         image: registry-np.geminisolutions.com/ec-dashboard/ec-dashboard
         ports:
         - name: ec-dashboard
-          containerPort: 8080
+          containerPort: 3000
         imagePullPolicy: Always
       imagePullSecrets: 
       - name: regcred
