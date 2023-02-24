@@ -20,7 +20,7 @@ node('node_runner_18') {
     node('image_builder_trivy') {
        try {
 	       stage('Checkout_Centralized_Files') {
-           dir ('ECBackend/centralized') {
+           dir ('EC-Dashboard/centralized') {
                checkout([$class: 'GitSCM', 
                branches: [[name: '*/main']], 
                doGenerateSubmoduleConfigurations: false, 
