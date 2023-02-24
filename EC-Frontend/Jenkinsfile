@@ -5,6 +5,22 @@ node('node_runner_18') {
     userRemoteConfigs: [[credentialsId: 'admingithub', url: 'git@github.com:Gemini-Solutions/ec-python.git', poll: 'false']]])
              }
       }
+	
+	try {
+        stage('Checkout_Centralized_Files') {
+           dir ('ECBackend/centralized') {
+               checkout([$class: 'GitSCM', 
+               branches: [[name: '*/main']], 
+               doGenerateSubmoduleConfigurations: false, 
+               extensions: [], 
+               submoduleCfg:  [], 
+               userRemoteConfigs: [[credentialsId: 'admingithub', 
+               url: 'git@github.com:Gemini-Solutions/centralized-repo.git', 
+               poll: 'false']]])
+	             sh 'ls -la'
+           }
+       }
+	
       
       stage('Nodejs_Build') {
             container('nodejs-18') 
@@ -22,7 +38,7 @@ node('node_runner_18') {
                 dir ('EC-Dashboard') {
                   container('docker-image-builder-trivy') {
                   withCredentials([usernamePassword(credentialsId: 'docker_registry', passwordVariable: 'docker_pass', usernameVariable: 'docker_user')]) {
-                  sh 'docker image build -f DockerFile -t registry-np.geminisolutions.com/EC-Dashboard/EC-Dashboard:1.0-$BUILD_NUMBER -t registry-np.geminisolutions.com/EC-Dashboard/EC-Dashboard .'
+                  sh 'docker image build -f centralized/EC-Frontend/DockerFile -t registry-np.geminisolutions.com/EC-Dashboard/EC-Dashboard:1.0-$BUILD_NUMBER -t registry-np.geminisolutions.com/EC-Dashboard/EC-Dashboard .'
                   sh 'trivy image -f json --timeout 20m registry-np.geminisolutions.com/EC-Dashboard/EC-Dashboard:1.0-$BUILD_NUMBER > trivy-report.json'
 	      archiveArtifacts artifacts: 'trivy-report.json', onlyIfSuccessful: true	
                         sh '''docker login -u $docker_user -p $docker_pass https://registry-np.geminisolutions.com'''
@@ -37,7 +53,7 @@ node('node_runner_18') {
                dir ('EC-Dashboard') {
                    container('docker-image-builder-trivy') {
                    kubeconfig(credentialsId: 'KubeConfigCred') {
-                   sh '/usr/local/bin/kubectl apply -f Deployment-beta.yaml -n dev'
+                   sh '/usr/local/bin/kubectl apply -f centralized/EC-Frontend/Deployment-beta.yaml -n dev'
                    sh '/usr/local/bin/kubectl rollout restart Deployment EC-Dashboard -n dev'
                    }
                    }
