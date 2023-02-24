@@ -1,26 +1,26 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: ECBackend
+  name: ec-backend
   namespace: dev
   labels:
-    app: ECBackend
+    app: ec-backend
 spec:
   replicas: 1
   revisionHistoryLimit: 0
   selector:
     matchLabels:
-      app: ECBackend
+      app: ec-backend
   template:
     metadata:
       labels:
-        app: ECBackend
+        app: ec-backend
     spec:
       containers:
-      - name: ECBackend
-        image: registry-np.geminisolutions.com/ECBackend/ECBackend
+      - name: ec-backend
+        image: registry-np.geminisolutions.com/ec_backend/ec_backend
         ports:
-        - name: ECBackend
+        - name: ec-backend
           containerPort: 5000
         imagePullPolicy: Always
       imagePullSecrets: 
