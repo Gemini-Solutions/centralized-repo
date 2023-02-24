@@ -28,14 +28,14 @@ node('image_builder_trivy') {
       dir('ECBackend') {
         container('docker-image-builder-trivy') {
           withCredentials([usernamePassword(credentialsId: 'docker_registry', passwordVariable: 'docker_pass', usernameVariable: 'docker_user')]) {
-            sh 'docker image build -f ECBackend/centralized/DockerFile -t registry-np.geminisolutions.com/ECBackend/ECBackend:1.0-$BUILD_NUMBER -t registry-np.geminisolutions.com/ECBackend/ECBackend .'
-            sh 'trivy image -f json --timeout 20m registry-np.geminisolutions.com/ECBackend/ECBackend:1.0-$BUILD_NUMBER > trivy-report.json'
+            sh 'docker image build -f ECBackend/centralized/DockerFile -t registry-np.geminisolutions.com/ec_backend/ec_backend:1.0-$BUILD_NUMBER -t registry-np.geminisolutions.com/ec_backend/ec_backend .'
+            sh 'trivy image -f json --timeout 20m registry-np.geminisolutions.com/ec_backend/ec_backend:1.0-$BUILD_NUMBER > trivy-report.json'
             archiveArtifacts artifacts: 'trivy-report.json', onlyIfSuccessful: true
             sh ''
             'docker login -u $docker_user -p $docker_pass https://registry-np.geminisolutions.com'
             ''
-            sh 'docker push registry-np.geminisolutions.com/ECBackend/ECBackend:1.0-$BUILD_NUMBER'
-            sh 'docker push registry-np.geminisolutions.com/ECBackend/ECBackend'
+            sh 'docker push registry-np.geminisolutions.com/ec_backend/ec_backend:1.0-$BUILD_NUMBER'
+            sh 'docker push registry-np.geminisolutions.com/ec_backend/ec_backend'
             sh 'rm -rf build/'
           }
         }
