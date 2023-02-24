@@ -32,6 +32,7 @@ node('node_runner_18') {
             }
            }
          }
+}
     node('image_builder_trivy') {
        try {
        stage('Build_image') {
