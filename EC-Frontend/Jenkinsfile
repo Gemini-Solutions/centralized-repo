@@ -40,8 +40,8 @@ node('node_runner_18') {
                   sh 'trivy image -f json --timeout 20m registry-np.geminisolutions.com/ec-dashboard/ec-dashboard:1.0-$BUILD_NUMBER > trivy-report.json'
 	      archiveArtifacts artifacts: 'trivy-report.json', onlyIfSuccessful: true	
                         sh '''docker login -u $docker_user -p $docker_pass https://registry-np.geminisolutions.com'''
-                  sh 'docker push registry-np.geminisolutions.com/EC-Dashboard/EC-Dashboard:1.0-$BUILD_NUMBER'
-                  sh 'docker push registry-np.geminisolutions.com/EC-Dashboard/EC-Dashboard'
+                  sh 'docker push registry-np.geminisolutions.com/ec-dashboard/ec-dashboard:1.0-$BUILD_NUMBER'
+                  sh 'docker push registry-np.geminisolutions.com/ec-dashboard/ec-dashboard'
                   sh 'rm -rf build/'
                }
              }
