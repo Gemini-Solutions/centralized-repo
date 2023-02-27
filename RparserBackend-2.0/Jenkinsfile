@@ -23,7 +23,7 @@ userRemoteConfigs: [[credentialsId: 'admingithub', url: 'git@github.com:Gemini-S
             dir ('rparser_2.0_backend') {
               container('docker-image-builder-trivy') {
                 withCredentials([usernamePassword(credentialsId: 'docker_registry', passwordVariable: 'docker_pass', usernameVariable: 'docker_user')]) {
-              sh 'docker image build -f Dockerfile -t registry-np.geminisolutions.com/resume_parser/rparser_2.0_backend/resume_parser-2.0:1.0-$BUILD_NUMBER -t registry-np.geminisolutions.com/resume_parser/rparser_2.0_backend/resume_parser-2.0 .'
+              sh 'docker image build -f centralized/RparserBackend-2.0/Dockerfile -t registry-np.geminisolutions.com/resume_parser/rparser_2.0_backend/resume_parser-2.0:1.0-$BUILD_NUMBER -t registry-np.geminisolutions.com/resume_parser/rparser_2.0_backend/resume_parser-2.0 .'
               sh 'trivy image -f json registry-np.geminisolutions.com/resume_parser/rparser_2.0_backend/resume_parser-2.0:1.0-$BUILD_NUMBER > trivy-report.json'
 	      archiveArtifacts artifacts: 'trivy-report.json', onlyIfSuccessful: true
                    sh '''docker login -u $docker_user -p $docker_pass https://registry-np.geminisolutions.com'''
