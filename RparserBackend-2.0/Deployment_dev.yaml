@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
       - name: rparserbackend
-        image: registry-np.geminisolutions.com/resume_parser/rparser_2.0_backend/resume_parser-2.0
+        image: registry-np.geminisolutions.com/resume_parser/rparser_2.0_backend/resume_parser-2.0:latest
         ports:
         - name: rparserbackend-2.0
           containerPort: 5000
