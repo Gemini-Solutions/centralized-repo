@@ -1,26 +1,26 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: rparserbackend-2.0
+  name: rparserbk-2.0
   namespace: dev
   labels:
-    app: rparserbackend-2.0
+    app: rparserbk-2.0
 spec:
   replicas: 1
   revisionHistoryLimit: 0
   selector:
     matchLabels:
-      app: rparserbackend-2.0
+      app: rparserbk-2.0
   template:
     metadata:
       labels:
-        app: rparserbackend-2.0
+        app: rparserbk-2.0
     spec:
       containers:
-      - name: rparserbackend
+      - name: rparserbk-2.0
         image: registry-np.geminisolutions.com/resume_parser/rparser_2.0_backend/resume_parser-2.0:latest
         ports:
-        - name: rparserbackend-2.0
+        - name: rparserbk-2.0
           containerPort: 5000
         imagePullPolicy: Always
       imagePullSecrets:
