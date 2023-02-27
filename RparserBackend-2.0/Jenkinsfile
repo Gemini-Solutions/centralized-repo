@@ -2,7 +2,7 @@ node('image_builder_trivy') {
    stage('rparser_2.0_checkout') {
          dir ('rparser_2.0_backend') {
          checkout([$class: 'GitSCM', branches: [[name: '*/development']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg:  [], \
-userRemoteConfigs: [[credentialsId: 'admingithub', url: 'git@github.com:Gemini-Solutions/resume_parser-2.0.git']]])
+userRemoteConfigs: [[credentialsId: 'admingithub', url: 'git@github.com:Gemini-Solutions/Resume_Parser-2.0.git']]])
          }
     }
   try {
