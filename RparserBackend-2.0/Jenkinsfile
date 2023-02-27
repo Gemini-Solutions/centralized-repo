@@ -1,0 +1,38 @@
+node('image_builder_trivy') { 
+   stage('rparser_2.0_checkout') {
+         dir ('rparser_2.0_backend') {
+         checkout([$class: 'GitSCM', branches: [[name: '*/development']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg:  [], \
+userRemoteConfigs: [[credentialsId: 'admingithub', url: 'git@github.com:Gemini-Solutions/resume_parser-2.0.git']]])
+         }
+    }
+  try {
+   stage('Build_image') {
+            dir ('rparser_2.0_backend') {
+              container('docker-image-builder-trivy') {
+                withCredentials([usernamePassword(credentialsId: 'docker_registry', passwordVariable: 'docker_pass', usernameVariable: 'docker_user')]) {
+              sh 'docker image build -f Dockerfile -t registry-np.geminisolutions.com/resume_parser/rparser_2.0_backend/resume_parser-2.0:1.0-$BUILD_NUMBER -t registry-np.geminisolutions.com/resume_parser/rparser_2.0_backend/resume_parser-2.0 .'
+              sh 'trivy image -f json registry-np.geminisolutions.com/resume_parser/rparser_2.0_backend/resume_parser-2.0:1.0-$BUILD_NUMBER > trivy-report.json'
+	      archiveArtifacts artifacts: 'trivy-report.json', onlyIfSuccessful: true
+                   sh '''docker login -u $docker_user -p $docker_pass https://registry-np.geminisolutions.com'''
+              sh 'docker push registry-np.geminisolutions.com/resume_parser/rparser_2.0_backend/resume_parser-2.0:1.0-$BUILD_NUMBER'
+              sh 'docker push registry-np.geminisolutions.com/resume_parser/rparser_2.0_backend/resume_parser-2.0'
+           }
+         }
+        }
+        stage('Deployment_stage') {
+               dir ('rparser_2.0_backend') {
+                   container('docker-image-builder-trivy') {
+                   kubeconfig(credentialsId: 'KubeConfigCred') {
+                   sh '/usr/local/bin/kubectl apply -f Deployment_dev.yaml -n dev'
+                   sh '/usr/local/bin/kubectl rollout restart Deployment rparserbackend-2.0 -n dev'
+
+                   }
+                   }
+               }
+           }
+      }
+  } finally {
+     //sh 'echo current_image="registry-np.geminisolutions.com/resume_parser/resume_parser_backend/resume_parser:1.0-$BUILD_NUMBER" > build.properties'
+     //archiveArtifacts artifacts: 'build.properties', onlyIfSuccessful: true
+  }
+    }
