@@ -9,10 +9,10 @@ RUN pip install --no-cache-dir --upgrade -r /code/requirements.txt
 
 COPY ./src /code/src
 
-# EXPOSE 5000
+EXPOSE 80
 
 WORKDIR /code/src
 
-# ENTRYPOINT ["python"]
+# CMD ["python3", "app.py"]
 
-CMD ["python3", "app.py"]
+CMD ["gunicorn", "-w", "1", "-b", "0.0.0.0:80", "app:app"]
