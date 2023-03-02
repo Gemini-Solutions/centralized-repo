@@ -21,7 +21,7 @@ spec:
         image: registry-np.geminisolutions.com/ec_backend/ec_backend:latest
         ports:
         - name: ec-backend
-          containerPort: 5000
+          containerPort: 80
         imagePullPolicy: Always
       imagePullSecrets: 
       - name: regcred
