@@ -22,19 +22,6 @@ node('maven_runner') {
     userRemoteConfigs: [[credentialsId: 'admingithub', url: 'git@github.com:Gemini-Solutions/TradeSim-BackTest.git', poll: 'false']]])
              }
         }
-    stage('Checkout_Centralized_Files') {
-           dir ('TradeSimBackTest/centralized') {
-               checkout([$class: 'GitSCM', 
-               branches: [[name: '*/main']], 
-               doGenerateSubmoduleConfigurations: false, 
-               extensions: [], 
-               submoduleCfg:  [], 
-               userRemoteConfigs: [[credentialsId: 'admingithub', 
-               url: 'git@github.com:Gemini-Solutions/centralized-repo.git', 
-               poll: 'false']]])
-	             sh 'ls -la'
-           }
-       }
     stage('Maven_Build') {
             container('mavenbuild') {
              dir ('TradeSimBackTest') {
@@ -51,6 +38,19 @@ node('maven_runner') {
 
     node('image_builder_trivy') { 
       try {
+	      stage('Checkout_Centralized_Files') {
+           dir ('TradeSimBackTest/centralized') {
+               checkout([$class: 'GitSCM', 
+               branches: [[name: '*/main']], 
+               doGenerateSubmoduleConfigurations: false, 
+               extensions: [], 
+               submoduleCfg:  [], 
+               userRemoteConfigs: [[credentialsId: 'admingithub', 
+               url: 'git@github.com:Gemini-Solutions/centralized-repo.git', 
+               poll: 'false']]])
+	             sh 'ls -la'
+           }
+       }
        stage('Build_image') {
                 dir ('TradeSimBackTest') {
                   container('docker-image-builder-trivy') {
