@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tradesimui
+  namespace: dev
+  labels:
+    app: tradesimui
+spec:
+  replicas: 1
+  revisionHistoryLimit: 0
+  selector:
+    matchLabels:
+      app: tradesimui
+  template:
+    metadata:
+      labels:
+        app: tradesimui
+    spec:
+      containers:
+      - name: tradesimui
+        image: registry-np.geminisolutions.com/tradesim/tradesim
+        ports:
+        - name: tradesimui
+          containerPort: 80
+        imagePullPolicy: Always
+      imagePullSecrets: 
+      - name: regcred
