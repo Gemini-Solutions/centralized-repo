@@ -28,20 +28,7 @@ node('maven_runner') {
 // userRemoteConfigs: [[credentialsId: 'admingithub', url: 'git@github.com:Gemini-Solutions/TradeOrderManagement.git', poll: 'false']]])
 //          }
 //     }
-  try {
-    stage('Checkout_Centralized_Files') {
-           dir ('amc_calculator/centralized') {
-               checkout([$class: 'GitSCM', 
-               branches: [[name: '*/main']], 
-               doGenerateSubmoduleConfigurations: false, 
-               extensions: [], 
-               submoduleCfg:  [], 
-               userRemoteConfigs: [[credentialsId: 'admingithub', 
-               url: 'git@github.com:Gemini-Solutions/centralized-repo.git', 
-               poll: 'false']]])
-	             sh 'ls -la'
-           }
-       }
+ 
   stage('Maven_Build') {
         container('mavenbuild') {
          dir ('TradeOrderManagement') {
@@ -58,6 +45,19 @@ node('maven_runner') {
 
 node('image_builder_trivy') { 
   try {
+	  stage('Checkout_Centralized_Files') {
+           dir ('amc_calculator/centralized') {
+               checkout([$class: 'GitSCM', 
+               branches: [[name: '*/main']], 
+               doGenerateSubmoduleConfigurations: false, 
+               extensions: [], 
+               submoduleCfg:  [], 
+               userRemoteConfigs: [[credentialsId: 'admingithub', 
+               url: 'git@github.com:Gemini-Solutions/centralized-repo.git', 
+               poll: 'false']]])
+	             sh 'ls -la'
+           }
+       }
    stage('Build_image') {
             dir ('TradeOrderManagement') {
               container('docker-image-builder-trivy') {
