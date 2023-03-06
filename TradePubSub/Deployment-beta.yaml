@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tradespubsub
+  namespace: dev
+  labels:
+    app: tradespubsub
+spec:
+  replicas: 1
+  revisionHistoryLimit: 0
+  selector:
+    matchLabels:
+      app: tradespubsub
+  template:
+    metadata:
+      labels:
+        app: tradespubsub
+    spec:
+      containers:
+      - name: tradespubsub
+        image: registry-np.geminisolutions.com/tradepubsub/tradepubsub
+        ports:
+          - name: tradespubsub
+            containerPort: 8899
+        imagePullPolicy: Always
+      imagePullSecrets:
+      - name: regcred
