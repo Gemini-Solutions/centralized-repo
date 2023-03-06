@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tradebacktest
+  namespace: dev
+  labels:
+    app: tradebacktest
+spec:
+  replicas: 1
+  revisionHistoryLimit: 0
+  selector:
+    matchLabels:
+      app: tradebacktest
+  template:
+    metadata:
+      labels:
+        app: tradebacktest
+    spec:
+      containers:
+      - name: tradebacktest
+        image: registry-np.geminisolutions.com/tradebacktest/tradebacktest
+        ports:
+        - name: tradebacktest
+          containerPort: 8999
+        imagePullPolicy: Always
+      imagePullSecrets: 
+      - name: regcred
