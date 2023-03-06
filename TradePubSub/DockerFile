@@ -1,0 +1,6 @@
+FROM anapsix/alpine-java
+MAINTAINER rajat.omar@geminisolutions.in
+COPY target/Gem*.jar /home/
+WORKDIR /home/
+EXPOSE 8899
+ENTRYPOINT ["java","-jar","GemPubSub-1.0-SNAPSHOT.jar"]
