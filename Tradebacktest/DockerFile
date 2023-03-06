@@ -1,0 +1,6 @@
+FROM anapsix/alpine-java
+MAINTAINER rajat.omar@geminisolutions.in
+COPY ./target/*.jar /home/
+WORKDIR /home/
+EXPOSE 8999
+ENTRYPOINT ["java","-jar","strategybacktest-1.0-SNAPSHOT.jar"]
