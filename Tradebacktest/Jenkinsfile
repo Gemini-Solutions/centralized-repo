@@ -3,11 +3,11 @@ node {
 //     checkout scm
 //   }
      stage('backtest_checkout') {
-//              dir ('TradeSimBackTest') {
+             dir ('TradeSimBackTest') {
              checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg:  [], \
     userRemoteConfigs: [[credentialsId: 'admingithub', url: 'git@github.com:Gemini-Solutions/TradeSim-BackTest.git', poll: 'false']]])
              }
-//         }
+        }
   stage('SonarQube Analysis') {
     def mvn = tool 'Default Maven';
     withSonarQubeEnv() {
