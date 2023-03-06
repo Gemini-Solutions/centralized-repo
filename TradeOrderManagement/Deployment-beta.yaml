@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tradeordermanag
+  namespace: dev
+  labels:
+    app: tradeordermanag
+spec:
+  replicas: 1
+  revisionHistoryLimit: 0
+  selector:
+    matchLabels:
+      app: tradeordermanag
+  template:
+    metadata:
+      labels:
+        app: tradeordermanag
+    spec:
+      containers:
+      - name: tradeordermanag
+        image: registry-np.geminisolutions.com/tradeordermanagement/tradeordermanagement
+        ports:
+        - name: tradeordermanag
+          containerPort: 8090
+        imagePullPolicy: Always
+      imagePullSecrets: 
+      - name: regcred
