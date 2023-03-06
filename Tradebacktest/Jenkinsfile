@@ -36,6 +36,7 @@ node('maven_runner') {
 	             sh 'ls -la'
            }
        }
+  }
       stage('Maven_Build') {
             container('mavenbuild') {
              dir ('TradeSimBackTest') {
