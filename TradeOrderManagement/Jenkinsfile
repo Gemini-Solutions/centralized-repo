@@ -46,7 +46,7 @@ node('maven_runner') {
 node('image_builder_trivy') { 
   try {
 	  stage('Checkout_Centralized_Files') {
-           dir ('amc_calculator/centralized') {
+           dir ('TradeOrderManagement/centralized') {
                checkout([$class: 'GitSCM', 
                branches: [[name: '*/main']], 
                doGenerateSubmoduleConfigurations: false, 
