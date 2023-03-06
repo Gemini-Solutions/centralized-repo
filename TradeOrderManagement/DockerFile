@@ -1,0 +1,6 @@
+FROM anapsix/alpine-java
+MAINTAINER rajat.omar@geminisolutions.in
+COPY target/Order*.jar /home/
+WORKDIR /home/
+EXPOSE 8090
+ENTRYPOINT ["java","-jar","OrderManagement-1.0-SNAPSHOT.jar"]
