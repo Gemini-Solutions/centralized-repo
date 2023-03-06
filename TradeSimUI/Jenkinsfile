@@ -1,6 +1,9 @@
 node {
   stage('SCM') {
-    checkout scm
+	  dir ('TradeSim'){
+             checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg:  [], \
+userRemoteConfigs: [[credentialsId: 'admingithub', url: 'git@github.com:Gemini-Solutions/TradeApp.git', poll: 'false']]])
+  }
   }
   stage('SonarQube Analysis') {
     nodejs('nodejs16') {
@@ -18,12 +21,6 @@ node {
   }
 }
 node('nodejs_runner') {
-  stage('TradeSim_UI') {
-         dir ('TradeSim') {
-         checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg:  [], \
-userRemoteConfigs: [[credentialsId: 'admingithub', url: 'git@github.com:Gemini-Solutions/TradeApp.git', poll: 'false']]])
-         }
-  }
   stage('Nodejs_Build') {
         container('nodejs-12') {
             dir ('TradeSim') {
