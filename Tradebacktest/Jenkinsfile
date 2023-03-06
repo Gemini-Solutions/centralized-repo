@@ -24,7 +24,7 @@ node('maven_runner') {
         }
   try {
     stage('Checkout_Centralized_Files') {
-           dir ('amc_calculator/centralized') {
+           dir ('TradeSimBackTest/centralized') {
                checkout([$class: 'GitSCM', 
                branches: [[name: '*/main']], 
                doGenerateSubmoduleConfigurations: false, 
