@@ -22,7 +22,6 @@ node('maven_runner') {
     userRemoteConfigs: [[credentialsId: 'admingithub', url: 'git@github.com:Gemini-Solutions/TradeSim-BackTest.git', poll: 'false']]])
              }
         }
-  try {
     stage('Checkout_Centralized_Files') {
            dir ('TradeSimBackTest/centralized') {
                checkout([$class: 'GitSCM', 
@@ -36,8 +35,7 @@ node('maven_runner') {
 	             sh 'ls -la'
            }
        }
-  }
-      stage('Maven_Build') {
+    stage('Maven_Build') {
             container('mavenbuild') {
              dir ('TradeSimBackTest') {
                 sh 'rm -rf target'
