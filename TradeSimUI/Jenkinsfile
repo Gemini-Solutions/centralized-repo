@@ -14,7 +14,7 @@ userRemoteConfigs: [[credentialsId: 'admingithub', url: 'git@github.com:Gemini-S
    }
   }
   stage('Quality Gate') {
-    timeout (time: 5, unit: 'MINUTES') {
+    timeout (time: 7, unit: 'MINUTES') {
        waitForQualityGate abortPipeline: true
        echo "code is good"
     }
