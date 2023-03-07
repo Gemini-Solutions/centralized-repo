@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: whatsappwebhook
+  namespace: dev
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: whatsappwebhook
+  template:
+    metadata:
+      labels:
+        app: whatsappwebhook
+    spec:
+      containers:
+      - image: registry-np.geminisolutions.com/whatsappwebhook
+        imagePullPolicy: IfNotPresent
+        name: whatsappwebhook
+        ports:
+        - containerPort: 8080
+          protocol: TCP
+      imagePullSecrets:
+      - name: regcreds
