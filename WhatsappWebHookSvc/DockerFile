@@ -1,0 +1,6 @@
+FROM openjdk:17-jdk-slim
+MAINTAINER nikhil.sharma@geminisolutions.com
+COPY target/WhatsappWebHookSvc-1.0.0.jar /home/
+WORKDIR /home/
+EXPOSE 8080
+ENTRYPOINT ["java","-jar","WhatsappWebHookSvc-1.0.0.jar"]
