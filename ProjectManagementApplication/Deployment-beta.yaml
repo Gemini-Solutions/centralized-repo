@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gemeco-backend
+  namespace: dev
+  labels:
+    app: gemeco-backend
+spec:
+  replicas: 1
+  revisionHistoryLimit: 0
+  selector:
+    matchLabels:
+      app: gemeco-backend
+  template:
+    metadata:
+      labels:
+        app: gemeco-backend
+    spec:
+      containers:
+      - name: gemeco-backend
+        image: registry-np.geminisolutions.com/gemeco/gemecosystem_backend
+        ports:
+        - name: gemeco-backend
+          containerPort: 8080
+        imagePullPolicy: Always
+        env:
+        - name: ENV
+          value: beta
+      imagePullSecrets: 
+      - name: regcred
