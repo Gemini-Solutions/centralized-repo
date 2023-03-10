@@ -1,4 +1,4 @@
-FROM 947681381905.dkr.ecr.ap-south-1.amazonaws.com/maven:3.8.6-openjdk-11-slim
+FROM maven:3.8.6-openjdk-11-slim
 COPY target/backend*.jar /home/
 WORKDIR /home/
 EXPOSE 8080
