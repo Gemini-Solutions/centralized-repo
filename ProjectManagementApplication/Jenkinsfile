@@ -1,37 +1,28 @@
 node {
-//  stage('SCM') {
-//    checkout scm
-//  }
     stage('backend_checkout') {	
 		dir('gemeco-backend') {
-			checkout([$class: 'GitSCM', branches: [[name: '*/beta']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], \
+			checkout([$class: 'GitSCM', branches: [[name: '*/main']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], \
 				userRemoteConfigs: [[credentialsId: 'admingithub', url: 'git@github.com:Gemini-Solutions/Gemecosystem_Backend.git']]])
 		}
 	}
 
-  stage('SonarQube Analysis') {
-    def mvn = tool 'Default Maven';
-    withSonarQubeEnv() {
-      sh "${mvn}/bin/mvn clean verify sonar:sonar -Dsonar.projectKey=Gemeco-Backend_BETA -Dsonar.projectName=Gemeco-Backend_BETA"
-    }
-  }
-  stage('Quality Gate') {
-    timeout (time: 5, unit: 'MINUTES') {
-       waitForQualityGate abortPipeline: true
-       echo "code is good"
-    }
-  }
+//   stage('SonarQube Analysis') {
+//     def mvn = tool 'Default Maven';
+//     withSonarQubeEnv() {
+//       sh "${mvn}/bin/mvn clean verify sonar:sonar -Dsonar.projectKey=Gemeco-Backend_BETA -Dsonar.projectName=Gemeco-Backend_BETA"
+//     }
+//   }
+//   stage('Quality Gate') {
+//     timeout (time: 5, unit: 'MINUTES') {
+//        waitForQualityGate abortPipeline: true
+//        echo "code is good"
+//     }
+//   }
 }
 node('maven_runner_java11') {
-//	stage('backend_checkout') {	
-//		dir('gemeco-backend') {
-//			checkout([$class: 'GitSCM', branches: [[name: '*/beta']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], \
-//				userRemoteConfigs: [[credentialsId: 'admingithub', url: 'git@github.com:Gemini-Solutions/Gemecosystem_Backend.git']]])
-//		}
-//	}
 	stage('Maven_Build') {
 		container('maven-runner-11') {
-			dir('gemeco-backend') {
+			dir('ProjectManagementApplication') {
 				sh 'rm -rf target'
 				sh 'mvn package'
 				dir('target'){
@@ -44,8 +35,8 @@ node('maven_runner_java11') {
 
 node('image_builder_trivy') {
 	try {
-		stage('Checkout_Centralized_Files') {
-           dir ('gemeco-backend/centralized') {
+	     stage('Checkout_Centralized_Files') {
+               dir ('ProjectManagementApplication/centralized') {
                checkout([$class: 'GitSCM', 
                branches: [[name: '*/main']], 
                doGenerateSubmoduleConfigurations: false, 
@@ -59,15 +50,15 @@ node('image_builder_trivy') {
        }
 		
 		stage('Build_image') {
-			dir('gemeco-backend') {
+			dir('ProjectManagementApplication') {
 				container('docker-image-builder-trivy') {
 					withCredentials([usernamePassword(credentialsId: 'docker_registry', passwordVariable: 'docker_pass', usernameVariable: 'docker_user')]) {
-						sh 'docker image build -f centralized/gemeco-backend/Dockerfile -t registry-np.geminisolutions.com/gemeco/gemecosystem_backend:1.0-$BUILD_NUMBER -t registry-np.geminisolutions.com/gemeco/gemecosystem_backend .'
-  						sh 'trivy image -f json --timeout 30m --offline-scan registry-np.geminisolutions.com/gemeco/gemecosystem_backend:1.0-$BUILD_NUMBER > trivy-report.json'
+						sh 'docker image build -f centralized/ProjectManagementApplication/Dockerfile -t registry-np.geminisolutions.com/project_management_application/project_management_application:1.0-$BUILD_NUMBER -t registry-np.geminisolutions.com/project_management_application/project_management_application .'
+  						sh 'trivy image -f json --timeout 30m --offline-scan registry-np.geminisolutions.com/project_management_application/project_management_application:1.0-$BUILD_NUMBER > trivy-report.json'
 	      					archiveArtifacts artifacts: 'trivy-report.json', onlyIfSuccessful: true
 						sh '''docker login -u $docker_user -p $docker_pass https://registry-np.geminisolutions.com'''
-						sh 'docker push registry-np.geminisolutions.com/gemeco/gemecosystem_backend:1.0-$BUILD_NUMBER'
-						sh 'docker push registry-np.geminisolutions.com/gemeco/gemecosystem_backend'
+						sh 'docker push registry-np.geminisolutions.com/project_management_application/project_management_application:1.0-$BUILD_NUMBER'
+						sh 'docker push registry-np.geminisolutions.com/project_management_application/project_management_application'
 					}
 				}
 			}
@@ -76,8 +67,8 @@ node('image_builder_trivy') {
                dir ('gemeco-backend') {
                    container('docker-image-builder-trivy') {
                    kubeconfig(credentialsId: 'KubeConfigCred') {
-                   sh '/usr/local/bin/kubectl apply -f centralized/gemeco-backend/Deployment-beta.yaml -n dev'
-                   sh '/usr/local/bin/kubectl rollout restart Deployment gemeco-backend -n dev'
+                   sh '/usr/local/bin/kubectl apply -f centralized/ProjectManagementApplication/Deployment-beta.yaml -n dev'
+                   sh '/usr/local/bin/kubectl rollout restart Deployment projectmanagapp -n dev'
                    }
                    }
                }
