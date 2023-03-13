@@ -23,6 +23,19 @@ userRemoteConfigs: [[credentialsId: 'admingithub', url: 'git@github.com:Gemini-S
          }
     }
   try {
+	  stage('Checkout_Centralized_Files') {
+           dir ('rparser_2.0_backend/centralized') {
+               checkout([$class: 'GitSCM', 
+               branches: [[name: '*/main']], 
+               doGenerateSubmoduleConfigurations: false, 
+               extensions: [], 
+               submoduleCfg:  [], 
+               userRemoteConfigs: [[credentialsId: 'admingithub', 
+               url: 'git@github.com:Gemini-Solutions/centralized-repo.git', 
+               poll: 'false']]])
+	             sh 'ls -la'
+           }
+       }
    stage('Build_image') {
             dir ('hpipe_backend') {
               container('docker-image-builder-trivy') {
