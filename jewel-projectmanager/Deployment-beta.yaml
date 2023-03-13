@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: projectmanagapp
+  namespace: beta
+  labels:
+    app: projectmanagapp
+spec:
+  replicas: 1
+  revisionHistoryLimit: 0
+  selector:
+    matchLabels:
+      app: projectmanagapp
+  template:
+    metadata:
+      labels:
+        app: projectmanagapp
+    spec:
+      containers:
+      - name: projectmanagapp
+        image: registry-np.geminisolutions.com/project_management_application/project_management_application
+        ports:
+        - name: projectmanagapp
+          containerPort: 8001
+        imagePullPolicy: Always
+      imagePullSecrets: 
+      - name: regcred
