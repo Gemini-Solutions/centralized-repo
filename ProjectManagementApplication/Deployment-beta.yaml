@@ -17,7 +17,7 @@ spec:
         app: projectmanagapp
     spec:
       containers:
-      - name: gemeco-backend
+      - name: projectmanagapp
         image: registry-np.geminisolutions.com/project_management_application/project_management_application
         ports:
         - name: projectmanagapp
