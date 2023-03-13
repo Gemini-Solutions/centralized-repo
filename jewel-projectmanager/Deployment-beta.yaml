@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
       - name: projectmanagapp
-        image: registry-np.geminisolutions.com/project_management_application/project_management_application
+        image: registry-np.geminisolutions.com/gemeco/jewel_project_manager_beta
         ports:
         - name: projectmanagapp
           containerPort: 8001
