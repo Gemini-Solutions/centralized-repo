@@ -39,11 +39,11 @@ node('maven_runner_java11') {
 node('maven_runner_java11') {
 	stage('Maven_Build') {
 		container('maven-runner-11') {
-			dir('ProjectManagementApplication') {
+			dir('jewel-projectmanager') {
 				sh 'rm -rf target'
 				sh 'mvn package'
 				dir('target'){
-					sh 'chmod +x backend*.jar'
+					sh 'chmod +x ProjectManager*.jar'
 				}
 			}
 		}
@@ -67,21 +67,21 @@ node('image_builder_trivy') {
        }
 		
 		stage('Build_image') {
-			dir('ProjectManagementApplication') {
+			dir('jewel-projectmanager') {
 				container('docker-image-builder-trivy') {
 					withCredentials([usernamePassword(credentialsId: 'docker_registry', passwordVariable: 'docker_pass', usernameVariable: 'docker_user')]) {
-						sh 'docker image build -f centralized/ProjectManagementApplication/Dockerfile -t registry-np.geminisolutions.com/project_management_application/project_management_application:1.0-$BUILD_NUMBER -t registry-np.geminisolutions.com/project_management_application/project_management_application .'
-  						sh 'trivy image -f json --timeout 30m --offline-scan registry-np.geminisolutions.com/project_management_application/project_management_application:1.0-$BUILD_NUMBER > trivy-report.json'
-	      					archiveArtifacts artifacts: 'trivy-report.json', onlyIfSuccessful: true
+						sh 'docker image build -f DockerFile-beta -t registry-np.geminisolutions.com/gemeco/jewel_project_manager_beta:1.0-$BUILD_NUMBER -t registry-np.geminisolutions.com/gemeco/jewel_project_manager_beta .'
+  						sh 'trivy image -f json --timeout 30m --offline-scan registry-np.geminisolutions.com/gemeco/jewel_project_manager_beta:1.0-$BUILD_NUMBER > trivy-report.json'
+	      archiveArtifacts artifacts: 'trivy-report.json', onlyIfSuccessful: true
 						sh '''docker login -u $docker_user -p $docker_pass https://registry-np.geminisolutions.com'''
-						sh 'docker push registry-np.geminisolutions.com/project_management_application/project_management_application:1.0-$BUILD_NUMBER'
-						sh 'docker push registry-np.geminisolutions.com/project_management_application/project_management_application'
+						sh 'docker push registry-np.geminisolutions.com/gemeco/jewel_project_manager_beta:1.0-$BUILD_NUMBER'
+						sh 'docker push registry-np.geminisolutions.com/gemeco/jewel_project_manager_beta'
 					}
 				}
 			}
 		}
     stage('Deployment_stage') {
-               dir ('gemeco-backend') {
+               dir ('jewel-projectmanager') {
                    container('docker-image-builder-trivy') {
                    kubeconfig(credentialsId: 'KubeConfigCred') {
                    sh '/usr/local/bin/kubectl apply -f centralized/ProjectManagementApplication/Deployment-beta.yaml -n beta'
