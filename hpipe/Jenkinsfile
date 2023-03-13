@@ -24,7 +24,7 @@ userRemoteConfigs: [[credentialsId: 'admingithub', url: 'git@github.com:Gemini-S
     }
   try {
 	  stage('Checkout_Centralized_Files') {
-           dir ('rparser_2.0_backend/centralized') {
+           dir ('hpipe_backend/centralized') {
                checkout([$class: 'GitSCM', 
                branches: [[name: '*/main']], 
                doGenerateSubmoduleConfigurations: false, 
