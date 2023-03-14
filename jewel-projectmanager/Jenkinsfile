@@ -4,6 +4,7 @@ node {
 	dir('jewel-projectmanager') {
 	checkout([$class: 'GitSCM', branches: [[name: '*/main']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], \
 		userRemoteConfigs: [[credentialsId: 'admingithub', url: 'git@github.com:Gemini-Solutions/jewel-projectmanager.git']]])
+	sh 'ls'
 	}    
   }
   stage('SonarQube Analysis') {
