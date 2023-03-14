@@ -35,7 +35,7 @@ node('image_builder_trivy') {
             dir ('resume_parser_backend') {
               container('docker-image-builder-trivy') {
                 withCredentials([usernamePassword(credentialsId: 'docker_registry', passwordVariable: 'docker_pass', usernameVariable: 'docker_user')]) {
-              sh 'docker image build -f centralized/Resume Parser/Dockerfile -t registry-np.geminisolutions.com/resume_parser/resume_parser_backend/resume_parser:1.0-$BUILD_NUMBER -t registry-np.geminisolutions.com/resume_parser/resume_parser_backend/resume_parser .'
+              sh 'docker image build -f centralized/Resume_Parser/Dockerfile -t registry-np.geminisolutions.com/resume_parser/resume_parser_backend/resume_parser:1.0-$BUILD_NUMBER -t registry-np.geminisolutions.com/resume_parser/resume_parser_backend/resume_parser .'
               sh 'trivy image -f json --timeout 20m registry-np.geminisolutions.com/resume_parser/resume_parser_backend/resume_parser:1.0-$BUILD_NUMBER > trivy-report.json'
 	      archiveArtifacts artifacts: 'trivy-report.json', onlyIfSuccessful: true
 	       withCredentials([string(credentialsId: 'Defectdojo_Token', variable: 'defectdojo_token')]) {
@@ -69,7 +69,7 @@ node('image_builder_trivy') {
                dir ('resume_parser_backend') {
                    container('docker-image-builder-trivy') {
                    kubeconfig(credentialsId: 'KubeConfigCred') {
-                   sh '/usr/local/bin/kubectl apply -f centralized/Resume Parser/Deployment_dev.yaml -n dev'
+                   sh '/usr/local/bin/kubectl apply -f centralized/Resume_Parser/Deployment_dev.yaml -n dev'
                    sh '/usr/local/bin/kubectl rollout restart Deployment rparserbackend -n dev'
 
                    }
