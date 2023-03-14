@@ -1,9 +1,9 @@
-node {
+node ('maven_runner_java11') {
   stage('SCM') {
-             dir ('jewel-projectmanager') {
-         checkout([$class: 'GitSCM', branches: [[name: '*/main']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg:  [], \
-userRemoteConfigs: [[credentialsId: 'admingithub', url: 'git@github.com:Gemini-Solutions/jewel-projectmanager.git']]])
-         }
+    		dir('jewel-projectmanager') {
+			checkout([$class: 'GitSCM', branches: [[name: '*/beta']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], \
+				userRemoteConfigs: [[credentialsId: 'admingithub', url: 'git@github.com:Gemini-Solutions/jewel-projectmanager.git']]])
+		}
   }
   stage('SonarQube Analysis') {
     def mvn = tool 'Default Maven';
@@ -18,7 +18,6 @@ userRemoteConfigs: [[credentialsId: 'admingithub', url: 'git@github.com:Gemini-S
     }
   }
 }
-
 node('maven_runner_java11') {
 	stage('Maven_Build') {
 		container('maven-runner-11') {
@@ -30,30 +29,15 @@ node('maven_runner_java11') {
 				}
 			}
 		}
-	}
 }
 
 node('image_builder_trivy') {
 	try {
-	     stage('Checkout_Centralized_Files') {
-               dir ('jewel-projectmanager/centralized') {
-               checkout([$class: 'GitSCM', 
-               branches: [[name: '*/main']], 
-               doGenerateSubmoduleConfigurations: false, 
-               extensions: [], 
-               submoduleCfg:  [], 
-               userRemoteConfigs: [[credentialsId: 'admingithub', 
-               url: 'git@github.com:Gemini-Solutions/centralized-repo.git', 
-               poll: 'false']]])
-	             sh 'ls -la'
-           }
-       }
-		
 		stage('Build_image') {
 			dir('jewel-projectmanager') {
 				container('docker-image-builder-trivy') {
 					withCredentials([usernamePassword(credentialsId: 'docker_registry', passwordVariable: 'docker_pass', usernameVariable: 'docker_user')]) {
-						sh 'docker image build -f centralized/jewel-projectmanager/Dockerfile -t registry-np.geminisolutions.com/gemeco/jewel_project_manager_beta:1.0-$BUILD_NUMBER -t registry-np.geminisolutions.com/gemeco/jewel_project_manager_beta .'
+						sh 'docker image build -f DockerFile-beta -t registry-np.geminisolutions.com/gemeco/jewel_project_manager_beta:1.0-$BUILD_NUMBER -t registry-np.geminisolutions.com/gemeco/jewel_project_manager_beta .'
   						sh 'trivy image -f json --timeout 30m --offline-scan registry-np.geminisolutions.com/gemeco/jewel_project_manager_beta:1.0-$BUILD_NUMBER > trivy-report.json'
 	      archiveArtifacts artifacts: 'trivy-report.json', onlyIfSuccessful: true
 						sh '''docker login -u $docker_user -p $docker_pass https://registry-np.geminisolutions.com'''
@@ -67,8 +51,8 @@ node('image_builder_trivy') {
                dir ('jewel-projectmanager') {
                    container('docker-image-builder-trivy') {
                    kubeconfig(credentialsId: 'KubeConfigCred') {
-                   sh '/usr/local/bin/kubectl apply -f centralized/jewel-projectmanager/Deployment-beta.yaml -n beta'
-                   sh '/usr/local/bin/kubectl rollout restart Deployment projectmanagapp -n beta'
+                   sh '/usr/local/bin/kubectl apply -f Deployment-beta.yaml -n dev'
+                   sh '/usr/local/bin/kubectl rollout restart Deployment jewelprojectmanager -n dev'
                    }
                    }
                }
