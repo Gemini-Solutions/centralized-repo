@@ -1,6 +1,9 @@
 node ('maven_runner_java11') {
   stage('SCM') {
-    checkout scm
+	dir('jewel-projectmanager') {
+	checkout([$class: 'GitSCM', branches: [[name: '*/beta']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], \
+		userRemoteConfigs: [[credentialsId: 'admingithub', url: 'git@github.com:Gemini-Solutions/jewel-projectmanager.git']]])
+	}    
   }
   stage('SonarQube Analysis') {
     def mvn = tool 'Default Maven';
@@ -15,27 +18,7 @@ node ('maven_runner_java11') {
     }
   }
 }
-node('maven_runner_java11') {
-	stage('backend_checkout') {
-		dir('jewel-projectmanager') {
-			checkout([$class: 'GitSCM', branches: [[name: '*/beta']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], \
-				userRemoteConfigs: [[credentialsId: 'admingithub', url: 'git@github.com:Gemini-Solutions/jewel-projectmanager.git']]])
-		}
-	}
 
-//   stage('SonarQube Analysis') {
-//     def mvn = tool 'Default Maven';
-//     withSonarQubeEnv() {
-//       sh "${mvn}/bin/mvn clean verify sonar:sonar -Dsonar.projectKey=Gemeco-Backend_BETA -Dsonar.projectName=Gemeco-Backend_BETA"
-//     }
-//   }
-//   stage('Quality Gate') {
-//     timeout (time: 5, unit: 'MINUTES') {
-//        waitForQualityGate abortPipeline: true
-//        echo "code is good"
-//     }
-//   }
-}
 node('maven_runner_java11') {
 	stage('Maven_Build') {
 		container('maven-runner-11') {
