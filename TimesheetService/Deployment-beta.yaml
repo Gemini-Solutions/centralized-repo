@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: timesheetsvc
+  namespace: dev
+  labels:
+    app: timesheetsvc
+spec:
+  replicas: 1
+  revisionHistoryLimit: 0
+  selector:
+    matchLabels:
+      app: timesheetsvc
+  template:
+    metadata:
+      labels:
+        app: timesheetsvc
+    spec:
+      containers:
+      - name: timesheetsvc
+        image: registry-np.geminisolutions.com/mis/timesheetsvc
+        ports:
+        - name: timesheetsvc
+          containerPort: 8080
+        imagePullPolicy: Always
+      imagePullSecrets: 
+      - name: regcred
