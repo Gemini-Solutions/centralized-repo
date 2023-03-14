@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: secsim
+  namespace: dev
+  labels:
+    app: secsim
+spec:
+  replicas: 1
+  revisionHistoryLimit: 0
+  selector:
+    matchLabels:
+      app: secsim
+  template:
+    metadata:
+      labels:
+        app: secsim
+    spec:
+      containers:
+      - name: secsim
+        image: registry-np.geminisolutions.com/secsim/secsim:latest
+        ports:
+        - name: secsim
+          containerPort: 8080
+        imagePullPolicy: Always
+      imagePullSecrets:
+        - name: regcred
