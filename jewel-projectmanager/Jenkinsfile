@@ -29,6 +29,7 @@ node('maven_runner_java11') {
 				}
 			}
 		}
+	}	
 }
 
 node('image_builder_trivy') {
