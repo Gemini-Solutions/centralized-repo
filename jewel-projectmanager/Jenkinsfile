@@ -1,9 +1,9 @@
 node  {
   stage('SCM') {
-    		dir('jewel-projectmanager') {
+//     		dir('jewel-projectmanager') {
 			checkout([$class: 'GitSCM', branches: [[name: '*/beta']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], \
 				userRemoteConfigs: [[credentialsId: 'admingithub', url: 'git@github.com:Gemini-Solutions/jewel-projectmanager.git']]])
-		}
+// 		}
   }
   stage('SonarQube Analysis') {
     def mvn = tool 'Default Maven';
