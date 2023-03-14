@@ -1,4 +1,4 @@
-node ('maven_runner_java11') {
+node {
   stage('SCM') {
 	dir('jewel-projectmanager') {
 	checkout([$class: 'GitSCM', branches: [[name: '*/main']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], \
