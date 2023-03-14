@@ -32,7 +32,6 @@ node('maven_runner_java11') {
 
 node('image_builder_trivy') {
 	try {
-    try {
 	   stage('Checkout_Centralized_Files') {
            dir ('Secsim_Backend/centralized') {
                checkout([$class: 'GitSCM', 
