@@ -1,11 +1,9 @@
 node {
   stage('SCM') {
-	 cleanWs() 
-	dir('jewel-projectmanager') {
-	checkout([$class: 'GitSCM', branches: [[name: '*/main']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], \
-		userRemoteConfigs: [[credentialsId: 'admingithub', url: 'git@github.com:Gemini-Solutions/jewel-projectmanager.git']]])
-	sh 'ls'
-	}    
+             dir ('jewel-projectmanager') {
+         checkout([$class: 'GitSCM', branches: [[name: '*/main']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg:  [], \
+userRemoteConfigs: [[credentialsId: 'admingithub', url: 'git@github.com:Gemini-Solutions/jewel-projectmanager.git']]])
+         }
   }
   stage('SonarQube Analysis') {
     def mvn = tool 'Default Maven';
